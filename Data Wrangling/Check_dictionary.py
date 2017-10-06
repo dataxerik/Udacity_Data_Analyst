@@ -5129,4 +5129,5 @@ list_ = []
 for key_ in sorted(dict_.keys()):
     list_.append([key_, dict_[key_]])
 
-print(sorted(list_, key=lambda list_: -list_[1]))
+for list in sorted(list_, key=lambda list_: -list_[1]):
+    print(list)
