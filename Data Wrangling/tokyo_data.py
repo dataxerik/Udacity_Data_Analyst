@@ -119,17 +119,55 @@ def get_value_count(dict_, word_):
     return count
 
 
+def create_full_width_converter_dict():
+    full_width_prefix = r'\uFF1'
+    temp = {}
+    for i in range(10):
+        print(str(i) + ":'" + full_width_prefix + str(i) + "',")
+
+
 def find_kanji_chome_tags(dict_):
-    #'丁目[1-9]+－.?'
-    block_pattern = re.compile('丁目.?－[0-9]', re.U)
+    converter = {0: '\uFF10',
+                 1: '\uFF11',
+                 2: '\uFF12',
+                 3: '\uFF13',
+                 4: '\uFF14',
+                 5: '\uFF15',
+                 6: '\uFF16',
+                 7: '\uFF17',
+                 8: '\uFF18',
+                 9: '\uFF19' }
+    # '丁目[1-9]+－.?'
+    '''
+    NOTE: The numbers in this data are full-width characters and have different unicode values
+    I'm not excluding 0 from the beginning
+    Some numbers are english and some are full-width
+
+    :param dict_:
+    :return:
+    '''
+
+    full_block_pattern = re.compile('^大和市.+丁目[\uFF10-\uFF19]+－[\uFF10-\uFF19]+', re.U)
+    no_building_pattern = re.compile('^大和市.+丁目[\uFF10-\uFF19]+$', re.U)
+    english_number_pattern = re.compile('[1-9]', re.U)
+    no_district_pattern = re.compile('^大和市.+[\uFF10-\uFF19]+(－[\uFF10-\uFF19])?', re.U)
     space_pattern = re.compile('－', re.U)
     print(u'\xFF01', u'\xFF0E')
     for key in dict_.keys():
-        #print(key)
-        if block_pattern.match(key):
-            print(key)
-            #if space_pattern.search(key):
+        # print(key)
+        # print(block_pattern)
+        if full_block_pattern.search(key):
+            pass #print(key)
+            # if space_pattern.search(key):
             #    print(key)
+        elif no_building_pattern.search(key):
+            pass
+        elif english_number_pattern.search(key):
+            pass
+        elif no_district_pattern.search(key):
+            pass #print(key)
+        else:
+            print(key)
 
 
 start_time = time.time()
@@ -142,6 +180,7 @@ start_time = time.time()
 # print(check_regex(temp, '^addr$'))
 temp = read_file('addr_values.txt')
 find_kanji_chome_tags(temp)
+#print(create_full_width_converter_dict())
 # print(get_value_count(temp, 'バス停.+位置'))
 # print(sorted(temp.items(), key=lambda x: -x[1]))
 # print(sum(temp.values()))
