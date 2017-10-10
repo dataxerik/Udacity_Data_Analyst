@@ -27,19 +27,70 @@ Tokyo Central Post Office
 
 One import note is that we can abbreviate 一丁目5番3号 to 1-5-3. So, we should expect various combinations of this format.
 
-Word 	Meaning
-東京都 	Tokyo Prefecture
-中央区 	Central Ward
-八重洲一丁目 	Yaesu 1st District
-5番 	5th block
-3号 	Building Number 3
-東京中央郵便局 	Tokyo Central Post Office
+<table>
+	<tr>
+		<td>Word</td>
+		<td>Meaning</td>
+	</tr>
+	<tr>
+		<td>東京都</td>
+		<td>Tokyo Prefecture</td>
+	</tr>
+	<tr>
+		<td>中央区</td>
+		<td>Central Ward</td>
+	</tr>
+	<tr>
+		<td>八重洲一丁目</td>
+		<td>Yaesu 1st District</td>
+	</tr>
+	<tr>
+		<td>5番</td>
+		<td>5th block</td>
+	</tr>
+	<tr>
+		<td>3号</td>
+		<td>Building Number 3</td>
+	</tr>
+	<tr>
+		<td>東京中央郵便局</td>
+		<td>Tokyo Central Post Office</td>
+	</tr>
+</table>
 
 #### KSJ2
 
 In a preview of ways to come, KSJ2 is data that comes from Ministery of Land, Infrastructure, and Transport(MLIT) of Japan.
 
-reference
+KSJ2 collects information on various things such as Airports and Railways. And, data imported from KSJ2 have special tags who meaning isn't clear on first glance. So, here's an overview on various tags and their meanings.
+
+<table>
+    <tr>
+        <td colspan='2'>Airport Code Meanings</td>
+    <tr>
+	<tr>
+		<td>Abbreviation</td>
+		<td>Meaning</td>
+	</tr>
+	<tr>
+		<td>OPC</td>
+		<td>Operational City</td>
+	</tr>
+	<tr>
+		<td>LIN</td>
+		<td>Railway Line Name</td>
+	</tr>
+	<tr>
+		<td>RAC</td>
+		<td>Railway Type</td>
+	</tr>
+	<tr>
+		<td>INT</td>
+		<td>Service Provider Type</td>
+	</tr>
+</table>
+
+(reference)[http://wiki.openstreetmap.org/wiki/Talk:Import/Catalogue/Japan_KSJ2_Import]
 OSM Data Structure
 
 An .osm is a file with a XML strcuture. And, it contains five tags: nodes, ways, closed ways, areas, and relation. In this analysis, we are only looking at nodes and ways tags. Nodes tags are used to mark locations and may be separated or connected. Ways tags are connection lines between nodes. And, noth nodes and ways tags can have child tags, which are tags that contain key-value pairs. These key-value pairs describe the node or way. For example,
