@@ -1,0 +1,5 @@
+Abbreviation,Meaning
+OPC,Operational City
+LIN,Railway Line Name
+RAC,Railway Type
+INT,Service Provider Type

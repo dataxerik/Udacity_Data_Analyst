@@ -77,6 +77,7 @@ def find_number_of_node_ways(file_):
 def find_tag_attribute(file_, tag_name, target_file, limit=True, limit_num=50000):
     i = 0
     tag_addr = defaultdict(int)
+    tag_list = defaultdict(list)
     context = ET.iterparse(file_, events=('start', 'end'))
     _, root = next(context)
 
@@ -89,12 +90,33 @@ def find_tag_attribute(file_, tag_name, target_file, limit=True, limit_num=50000
                 tag_value = tag.get('v')
                 tag_key = tag.get('k')
                 if tag_key is not None and re.search(tag_name, tag.get('k'), re.I):
-                    tag_addr[tag_value] += 1
+                    print(ET.tostring(elem))
+                    tag_list[tag_key].append(tag_value)
         elem.clear()
         i += 1
-    write_dic_to_file(tag_addr, target_file)
-    print(tag_addr)
+    #write_dic_to_file(tag_list, target_file)
+    print(tag_list)
 
+
+def write_smaple(file_, tag_name, target_file, limit=True, limit_num=70000):
+    i = 0
+    context = ET.iterparse(file_, events=('start', 'end'))
+    _, root = next(context)
+    fout = open(target_file, 'w', encoding='utf-8')
+    for _, elem in context:
+        if limit and i == limit_num:
+            break
+
+        if elem.tag == 'node':
+            for tag in elem.iter('tag'):
+                tag_key = tag.get('k')
+                if tag_key is not None and re.search(tag_name, tag.get('k'), re.I):
+                    ET.tostring(elem)
+                    fout.write(ET.tostring(elem, encoding='utf-8').decode("utf-8"))
+
+        elem.clear()
+        i += 1
+    fout.close()
 
 def read_file(file_):
     temp = {}
@@ -161,13 +183,32 @@ def find_kanji_chome_tags(dict_):
             # if space_pattern.search(key):
             #    print(key)
         elif no_building_pattern.search(key):
-            pass
+            print(key)
         elif english_number_pattern.search(key):
             pass
         elif no_district_pattern.search(key):
             pass #print(key)
         else:
-            print(key)
+            pass #print(key)
+
+
+def create_database(file_):
+    context = ET.iterparse(file_, events=('start', 'end'))
+    _, root = next(context)
+    #fout = open(target_file, 'w', encoding='utf-8')
+    for _, elem in context:
+        '''
+            For each node:
+                if there are no tags just parse the changeset, id, timestamp, uid, user, lat, lon
+
+                if there are tags then ignore tags with 'fixme'
+                    If there is an address then I should parse it.
+                        some places don't have district.
+                    if there are KSJ2 tags
+                        I need to ignore lot, lat, name:*
+        '''
+
+        elem.clear()
 
 
 start_time = time.time()
@@ -175,13 +216,26 @@ start_time = time.time()
 # print(get_key_values(file, limit=False))
 # tag_list = read_file('node_tag_keys.txt')
 # print(len(tag_list))
-# find_tag_attribute(file, '^addr$', 'addr_values.txt', False)
-# temp = read_file('node_tag_keys.txt')
-# print(check_regex(temp, '^addr$'))
-temp = read_file('addr_values.txt')
-find_kanji_chome_tags(temp)
+#temp = read_file('node_tag_keys.txt')
+#find_tag_attribute(file, '^KSJ2:', 'KSJ2_values_by_key.txt', False)
+write_smaple(file, '^addr$', 'addr_sampley.txt', False)
+#print(check_regex(temp, '^sea'))
+
+#find_kanji_chome_tags(temp)
 #print(create_full_width_converter_dict())
 # print(get_value_count(temp, 'バス停.+位置'))
-# print(sorted(temp.items(), key=lambda x: -x[1]))
+'''
+for _ in sorted(temp.items(), key=lambda x: -x[1]):
+    if 'KSJ2' in _[0]:
+        print(_)
+'''
+def print_pretty(temp):
+    for key in temp.keys():
+        i = 0
+        for _ in temp[key]:
+            if i == 10:
+                break
+            print(key, _)
+            i += 1
 # print(sum(temp.values()))
 print(time.time() - start_time)
