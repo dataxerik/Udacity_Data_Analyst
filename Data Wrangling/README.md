@@ -188,3 +188,50 @@ One thing that immediatedly caught my eye was the 'FIXME', 'FIXME:ja', and 'Fixm
     "version": 2995171
 }
 ```
+
+#### Seamark
+
+```xml
+<node changeset="33499331" id="1211621097" lat="35.1520306" lon="139.1471104" timestamp="2015-08-22T07:05:57Z" uid="128186" user="malcolmh" version="4">
+	<tag k="source" v="US NGA Pub. 112. 2009-11-12." />
+```
+	<tag k="seamark:name" v="Manazuru Ko" /></b>
+```xml
+	<tag k="seamark:type" v="light_minor" />
+	<tag k="seamark:light:range" v="12" />
+	<tag k="seamark:light:colour" v="red" />
+	<tag k="seamark:light:height" v="14" />
+	<tag k="seamark:light:period" v="4" />
+	<tag k="seamark:light:character" v="Fl" />
+	<tag k="seamark:light:reference" v="M 6323" />
+</node>
+<node changeset="33499331" id="316058290" lat="35.2845127" lon="139.5648215" timestamp="2015-08-22T07:05:58Z" uid="128186" user="malcolmh" version="4">
+	<tag k="source" v="US NGA Pub. 112. 2009-11-12." />
+	<tag k="man_made" v="lighthouse" />
+	<tag k="seamark:name" v="Abuzuru-no-hana" />
+	<tag k="seamark:type" v="light_minor" />
+	<tag k="seamark:light:range" v="10" />
+	<tag k="seamark:light:colour" v="red" />
+	<tag k="seamark:light:height" v="13" />
+	<tag k="seamark:light:period" v="4" />
+	<tag k="seamark:light:character" v="Iso" />
+	<tag k="seamark:light:reference" v="M 6335" />
+</node>
+<node changeset="33499331" id="752443273" lat="36.5093984" lon="140.6321943" timestamp="2015-08-22T07:05:27Z" uid="128186" user="malcolmh" version="6">
+	<tag k="name" v="日立灯台" />
+	<tag k="source" v="US NGA Pub. 112. 2009-11-12." />
+	<tag k="man_made" v="lighthouse" />
+	<tag k="seamark:name" v="Hitachi" />
+	<tag k="seamark:type" v="light_major" />
+	<tag k="seamark:light:1:group" v="3" />
+	<tag k="seamark:light:1:range" v="18" />
+	<tag k="seamark:light:1:colour" v="white" />
+	<tag k="seamark:light:1:height" v="42" />
+	<tag k="seamark:light:1:period" v="25" />
+	<tag k="seamark:light:reference" v="M 6495.8" />
+	<tag k="seamark:light:1:character" v="Fl" />
+	<tag k="seamark:light:1:sector_end" v="29" />
+	<tag k="seamark:light:1:sector_start" v="194" />
+</node>
+```
+
