@@ -1,0 +1,157 @@
+---
+title: "lesson3"
+author: "Derek Sharp"
+date: "October 4, 2017"
+output: html_document
+---
+
+```{r}
+getwd()
+list.files()
+pf <- read.csv('pseudo_facebook.tsv', sep = '\t')
+names(pf)
+```
+
+```{r}
+library(ggplot2)
+names(pf)
+qplot(x = dob_day, data = pf) + 
+  scale_x_continuous(breaks=1:31)
+```
+ggplot(aes(x = dob_day), data = pf) +
+  geom_histogram(binwidth = 1) +
+  scale_x_continuous(breaks = 1:31)
+  
+```{r} 
+qplot(x = friend_count, data = pf, xlim = c(0, 1000))
+```
+
+```{r}
+qplot(x = friend_count, data = subset(pf, !is.na(gender)), binwidth=25) + facet_grid(gender ~ .) + scale_x_continuous(limits = c(0, 1000), breaks=seq(0, 1000, 50))
+```
+
+```{r}
+  table(pf$gender)
+```
+
+```{r}
+  by(pf$friend_count, pf$gender, summary)
+```
+
+```{r}
+qplot(x = tenure/365, data = pf, 
+      xlab = 'Number of years using Facebook',
+      ylab = 'Number of users in sample',
+      color = I('black'), fill = I('#099DD9')) + scale_x_continuous(breaks=seq(1, 7, 1))
+```
+
+```{r}
+p1 = qplot(x = age, data = pf, 
+      xlab = 'Number of years using Facebook',
+      ylab = 'Number of users in sample',
+      color = I('black'), fill = I('#099DD9'))
+```
+
+```{r}
+summary(log10(pf$friend_count + 1))
+summary(sqrt(pf$friend_count + 1))
+```
+
+```{r}
+p2 = qplot(x = friend_count + 1, data = pf, 
+      xlab = 'Number of years using Facebook',
+      ylab = 'Number of users in sample',
+      color = I('black'), fill = I('#099DD9')) + scale_x_log10()
+
+p3 = qplot(x = friend_count + 1, data = pf, 
+      xlab = 'Number of years using Facebook',
+      ylab = 'Number of users in sample',
+      color = I('black'), fill = I('#099DD9')) + scale_x_sqrt()
+```
+
+```{r}
+  library('gridExtra')
+  grid.arrange(p1, p2, p3)
+```
+
+
+```{r}
+  logScale <- qplot(x = log10(friend_count), data = pf)
+
+  countScale <- ggplot(aes(x = friend_count), data = pf) +
+    geom_histogram() +
+    scale_x_log10()
+  
+  grid.arrange(logScale, countScale, ncol=2)
+```
+
+```{r}
+  qplot(x = friend_count, data = subset(pf, (!is.na(gender))),
+                                      binwidth = 10) +
+  scale_x_continuous(lim=c(0, 1000), breaks = seq(0, 1000, 50)) +
+  facet_wrap(~gender)
+
+  qplot(x = friend_count, data = subset(pf, (!is.na(gender))),
+                                      binwidth = 10, geom='freqpoly', color=gender) +
+  scale_x_continuous(lim=c(0, 1000), breaks = seq(0, 1000, 50))
+  
+  qplot(x = friend_count, y = ..count../sum(..count..),
+        data = subset(pf, (!is.na(gender))),
+        xlab = 'Friend Count',
+        ylab = 'Proportion of Users with that friend count',
+        binwidth = 10, geom='freqpoly', color=gender) +
+  scale_x_continuous(lim=c(0, 1000), breaks = seq(0, 1000, 50))
+  
+  
+  qplot(x = www_likes, y = ..count../sum(..count..),
+        data = subset(pf, (!is.na(gender))),
+        xlab = 'Like Count',
+        ylab = 'Proportion of Users with that like count',
+        binwidth = 10, geom='freqpoly', color=gender) +
+  scale_x_continuous(lim=c(50, 1000), breaks = seq(0, 1000, 50))
+  
+  qplot(x = www_likes,
+        data = subset(pf, (!is.na(gender))),
+        xlab = 'Like Count',
+        ylab = 'Proportion of Users with that like count',
+         geom='freqpoly', color=gender) +
+  scale_x_continuous() + scale_x_log10()
+```
+
+```{r}
+  by(pf$www_likes, pf$gender, sum)
+```
+
+```{r}
+  qplot(x = gender, y = friend_count, ylim = c(0, 1000), 
+        data = subset(pf, (!is.na(gender))), geom = 'boxplot')
+
+  qplot(x = gender, y = friend_count, 
+        data = subset(pf, (!is.na(gender))), geom = 'boxplot') +
+    scale_y_continuous(limits=c(0, 1000))
+  
+  qplot(x = gender, y = friend_count, 
+        data = subset(pf, (!is.na(gender))), geom = 'boxplot') +
+    coord_cartesian(ylim=c(0, 250))
+  
+  by(pf$friend_count, pf$gender, summary)
+  
+  qplot(x = gender, y = friendships_initiated, 
+        data = subset(pf, (!is.na(gender))), geom = 'boxplot') +
+    coord_cartesian(ylim=c(0, 500))
+  
+  by(pf$friendships_initiated, pf$gender, summary)
+```
+
+```{r}
+  summary(pf$mobile_likes)
+  summary(pf$mobile_likes > 0)
+  pf$mobile_check_in <- NA
+  pf$mobile_check_in <- ifelse(pf$mobile_likes > 0, 1, 0)
+  pf$mobile_check_in <- factor(pf$mobile_check_in)
+  summary(pf$mobile_check_in)
+  (summary(pf$mobile_check_in) / nrow(pf))*100
+  
+  nrow(pf)
+```
+

@@ -1,0 +1,104 @@
+---
+title: "Lesson5"
+author: "Derek Sharp"
+date: "October 12, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+  library(ggplot2)
+  library(dplyr)
+  pf <- read.csv("pseudo_facebook.tsv", sep='\t')
+```
+
+```{r}
+  qplot(x = age, y = friend_count, data=pf)
+  qplot(age, friend_count, data = pf)
+  ggplot(aes(x = age, y = friend_count), data = pf) + geom_point() + xlim(13, 90)
+  
+  summary(pf$age)
+```
+
+```{r}
+  ggplot(aes(x = age, y = friend_count), data = pf) + geom_jitter(alpha=1/20) + xlim(13, 90)
+  ggplot(aes(x = age, y = friend_count), data = pf) + 
+    geom_point(alpha=1/20, position = position_jitter(h = 0)) +
+    xlim(13, 90) + coord_trans(y="sqrt")
+```
+
+```{r}
+  ggplot(aes(x= age, y = friendships_initiated), data = pf) +
+    geom_point(alpha=1/10, position = position_jitter(h = 0)) + coord_trans(y="sqrt")
+```
+
+```{r}
+  age_groups <- group_by(pf, age)
+  pf.fc_by_age <- summarize(age_groups,
+                            friend_count_mean = mean(friend_count),
+                            friend_count_median = median(friend_count),
+                            n = n())
+  pf.fc_by_age <- arrange(pf.fc_by_age, age)
+  head(pf.fc_by_age)
+```
+
+```{r}
+  pf.fc_by_age = pf %.%
+  group_by(age) %.%
+  summarise(friend_count_mean = mean(friend_count),
+            firend_count_median = median(friend_count),
+            n = n()) %.%
+  arrange(age)
+head(pf.fc_by_age)
+
+ggplot(aes(x = age, y = friend_count_mean), data = pf.fc_by_age) + geom_point()
+```
+
+```{r}
+  ggplot(aes(age, friend_count), data = pf) +
+  coord_cartesian(xlim=c(13, 90), y=c(0, 1000)) +  
+    geom_point(alpha = 0.05,
+               position = position_jitter(h = 0),
+               color = 'orange') +
+  
+  geom_line(stat = 'summary', fun.y = mean) +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .1),
+            linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .5),
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .9),
+            linetype = 2, color = 'blue')
+```
+
+
+```{r}
+  ggplot(aes(age, friend_count), data = pf) +
+    xlim(13, 90) +
+    geom_point(alpha = 0.05,
+               position = position_jitter(h = 0),
+               color = 'orange') +
+    coord_trans(y = 'sqrt') +
+  geom_line(stat = 'summary', fun.y = mean) +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .1),
+            linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .5),
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .9),
+            linetype = 2, color = 'blue')
+```
+
+```{r}
+  cor.test(pf$age, pf$friend_count)
+with(subset(pf, pf$age <= 70), cor.test(age, friend_count, method='pearson'))
+```
+
+```{r}
+  ggplot(aes(www_likes_received, likes_received), data = pf) + geom_point() +
+    xlim(0, quantile(pf$www_likes_received, 0.95)) +
+    ylim(0, quantile(pf$likes_received, 0.95)) +
+    geom_smooth(method = 'lm', color = 'red')
+  with(pf, cor.test(www_likes_received, likes_received))
+```

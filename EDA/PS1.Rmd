@@ -1,0 +1,99 @@
+---
+title: "PS1"
+author: "Derek Sharp"
+date: "October 12, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+  library(ggplot2)
+  library('gridExtra')
+  data(diamonds)
+```
+
+Problem 1
+
+```{r}
+  summary(diamonds)
+```
+
+Problem 2
+```{r}
+  qplot(x = price, data = diamonds)
+```
+
+Problem 3
+```{r}
+  summary(diamonds$price)
+```
+
+Problem 4
+```{r}
+  sum(diamonds$price < 500)
+  sum(diamonds$price < 250)
+  sum(diamonds$price >= 15000)
+```
+
+Problem 5
+```{r}
+  qplot(x = price, data = diamonds, binwidth =1,
+        xlab = "Prices",
+        color = I('black'), fill = I('#099DD9'))
+  ggsave('priceHistogram.png')
+```
+
+Problem 6
+```{r}
+  qplot(x = price, data = diamonds, binwidth = 25) + facet_grid(cut ~ .) +
+  coord_cartesian(xlim=c(0, 5000))
+```
+
+Problem 7
+```{r}
+  by(diamonds$price, diamonds$cut, summary, digits = max(getOption('digits')))
+```
+
+Problem 8
+```{r}
+  qplot(x = price, data = diamonds) + facet_wrap(~cut, scales="free_y")
+```
+
+Problem 9
+```{r}
+  qplot(x = price / carat, data = diamonds, binwidth=100) + facet_grid(cut ~ .) +
+  scale_x_log10()
+```
+
+Problem 10
+```{r}
+  qplot(x = cut, y = price, data = diamonds, geom='boxplot')
+```
+
+Problem 11
+```{r}
+  summary(subset(diamonds, diamonds$color == 'D')$price)
+  summary(subset(diamonds, diamonds$color == 'J')$price)
+  IQR(subset(diamonds, diamonds$color == 'D')$price)
+  IQR(subset(diamonds, diamonds$color == 'J')$price)
+```
+
+Problem 12
+```{r}
+  qplot(x = color, y = price / carat, data = diamonds, geom='boxplot')+
+    coord_cartesian(ylim=c(0, 9000))
+```
+
+Problem 13
+```{r}
+  qplot(x = carat, data = diamonds, gemo='freqploy', binwidth=.1) + scale_x_continuous()
+```
